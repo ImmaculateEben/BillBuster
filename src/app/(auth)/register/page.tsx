@@ -7,7 +7,6 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
-import { supabase } from '@/lib/supabase/client'
 
 export default function RegisterPage() {
   const router = useRouter()
@@ -30,6 +29,7 @@ export default function RegisterPage() {
       return
     }
 
+    const { supabase } = await import('@/lib/supabase/client')
     const { data, error } = await supabase.auth.signUp({
       email,
       password,

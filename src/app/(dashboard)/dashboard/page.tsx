@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { supabase } from '@/lib/supabase/client'
 
 interface Wallet {
   id: string
@@ -27,6 +26,7 @@ export default function DashboardPage() {
 
   useEffect(() => {
     const fetchData = async () => {
+      const { supabase } = await import('@/lib/supabase/client')
       const { data: { user } } = await supabase.auth.getUser()
       
       if (user) {
