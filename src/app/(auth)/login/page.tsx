@@ -30,6 +30,9 @@ export default function LoginPage() {
       setError(error.message)
       setLoading(false)
     } else if (data.user) {
+      // Refresh the router to get updated session
+      router.refresh()
+      
       // Get user role and redirect accordingly
       const { data: profile } = await supabase
         .from('profiles')
@@ -37,13 +40,17 @@ export default function LoginPage() {
         .eq('id', data.user.id)
         .single()
 
-      if (profile?.role === 'super_admin' || profile?.role === 'finance_admin') {
+      // Default redirect based on role, fallback to dashboard
+      const userRole = profile?.role || 'user'
+      
+      if (userRole === 'super_admin' || userRole === 'finance_admin') {
         router.push('/admin')
-      } else if (profile?.role === 'agent' || profile?.role === 'sub_agent') {
+      } else if (userRole === 'agent' || userRole === 'sub_agent') {
         router.push('/agent')
       } else {
         router.push('/dashboard')
       }
+      setLoading(false)
     }
   }
 
