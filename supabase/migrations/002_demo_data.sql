@@ -170,16 +170,16 @@ INSERT INTO wallets (
 INSERT INTO agents (
   id,
   user_id,
-  agent_code,
+  api_key,
   commission_rate,
-  status,
+  is_active,
   created_at
 ) VALUES (
   '33333333-3333-3333-3333-333333333333',
   '33333333-3333-3333-3333-333333333333',
-  'AGENT001',
+  'agent_api_key_001',
   2.5,  -- 2.5% commission
-  'active',
+  true,
   NOW()
 ) ON CONFLICT (id) DO NOTHING;
 
@@ -216,16 +216,6 @@ INSERT INTO providers (name, category, api_key, base_url, weight, is_active) VAL
   ('DSTV Provider', 'tv', 'dstv_key_123', 'https://api.dstv.com', 40, true),
   ('GOtv Provider', 'tv', 'gotv_key_456', 'https://api.gotv.com', 35, true),
   ('Startimes Provider', 'tv', 'startimes_key_789', 'https://api.startimes.com', 25, true)
-ON CONFLICT DO NOTHING;
-
--- ============================================
--- DEMO RATE LIMITS
--- ============================================
-INSERT INTO rate_limits (endpoint_pattern, method, max_requests, window_seconds, is_active) VALUES
-  ('/api/wallet/fund', 'POST', 10, 3600, true),
-  ('/api/wallet/transfer', 'POST', 20, 3600, true),
-  ('/api/services/airtime', 'POST', 50, 3600, true),
-  ('/api/services/data', 'POST', 50, 3600, true)
 ON CONFLICT DO NOTHING;
 
 -- ============================================

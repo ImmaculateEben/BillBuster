@@ -32,7 +32,7 @@ export default function LoginPage() {
     } else if (data.user) {
       // Refresh the router to get updated session
       router.refresh()
-      
+
       // Get user role and redirect accordingly
       const { data: profile } = await supabase
         .from('profiles')
@@ -42,7 +42,7 @@ export default function LoginPage() {
 
       // Default redirect based on role, fallback to dashboard
       const userRole = profile?.role || 'user'
-      
+
       if (userRole === 'super_admin' || userRole === 'finance_admin') {
         router.push('/admin')
       } else if (userRole === 'agent' || userRole === 'sub_agent') {
@@ -55,11 +55,16 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-muted/50 p-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-background to-muted/50 p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-bold">Welcome back</CardTitle>
-          <CardDescription>
+          <div className="flex items-center justify-center mb-4">
+            <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center">
+              <span className="text-white font-bold text-xl">B</span>
+            </div>
+          </div>
+          <CardTitle className="text-2xl font-bold text-center">Welcome back</CardTitle>
+          <CardDescription className="text-center">
             Enter your email and password to sign in to your account
           </CardDescription>
         </CardHeader>
@@ -79,16 +84,23 @@ export default function LoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
+                autoComplete="email"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+              <div className="flex items-center justify-between">
+                <Label htmlFor="password">Password</Label>
+                <Link href="/forgot-password" className="text-sm text-primary hover:underline">
+                  Forgot password?
+                </Link>
+              </div>
               <Input
                 id="password"
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
+                autoComplete="current-password"
               />
             </div>
           </CardContent>
@@ -98,13 +110,8 @@ export default function LoginPage() {
             </Button>
             <p className="text-sm text-center text-muted-foreground">
               Do not have an account?{' '}
-              <Link href="/register" className="text-primary hover:underline">
+              <Link href="/register" className="text-primary hover:underline font-medium">
                 Sign up
-              </Link>
-            </p>
-            <p className="text-sm text-center text-muted-foreground">
-              <Link href="/forgot-password" className="text-primary hover:underline">
-                Forgot password?
               </Link>
             </p>
           </CardFooter>
