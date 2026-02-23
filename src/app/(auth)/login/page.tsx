@@ -21,7 +21,7 @@ export default function LoginPage() {
     setError('')
 
     const { supabase } = await import('@/lib/supabase/client')
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     })
@@ -29,8 +29,21 @@ export default function LoginPage() {
     if (error) {
       setError(error.message)
       setLoading(false)
-    } else {
-      router.push('/dashboard')
+    } else if (data.user) {
+      // Get user role and redirect accordingly
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('role')
+        .eq('id', data.user.id)
+        .single()
+
+      if (profile?.role === 'super_admin' || profile?.role === 'finance_admin') {
+        router.push('/admin')
+      } else if (profile?.role === 'agent' || profile?.role === 'sub_agent') {
+        router.push('/agent')
+      } else {
+        router.push('/dashboard')
+      }
     }
   }
 

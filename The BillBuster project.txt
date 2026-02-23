@@ -1,0 +1,6 @@
+
+Demo Credentials:
+Role	Email	Password	Initial Balance
+User	demo@billbuster.com	Demo@123	N50,000
+Admin	admin@billbuster.com	Admin@123	N100,000
+Agent	agent@billbuster.com	Agent@123	N75,000
